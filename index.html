@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Procesar Secuencia de DNA</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    input[type="number"], input[type="file"], button {
+      width: 100%;
+      padding: 8px;
+      margin: 10px 0;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    pre {
+      background-color: #f4f4f4;
+      padding: 10px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Procesar Secuencia de DNA</h1>
+    <form id="form">
+      <label for="inicio">Posición de inicio:</label>
+      <input type="number" id="inicio" name="inicio" value="20000" required>
+
+      <label for="final">Posición final:</label>
+      <input type="number" id="final" name="final" value="20000" required>
+
+      <label for="file">Sube tu archivo de secuencia (formato .fa, y no multifasta que eso ya es pasarse y era mucho):</label>
+      <input type="file" id="file" name="file" required>
+
+      <button type="submit">Procesar Secuencia</button>
+    </form>
+
+    <h2>Resultado:</h2>
+
+    <button id="downloadBtn" style="display:none;">Descargar archivo .fasta</button>
+  </div>
+
+  <script>
+    // Esto es para procesar el archivo
+    function processFile(file, inicio, final) {
+      const reader = new FileReader();
+
+      reader.onload = function(e) {
+        const content = e.target.result;
+
+        // Se separa el archivo por líneas
+        const lines = content.split('\n');
+        
+        // Se elimina la primera y se junta el resto
+        const secuencia = lines.slice(1).join('');
+
+        const numero_caracteres = secuencia.length;
+
+        // Pa checkear
+        if (numero_caracteres >= (inicio + final)) {
+          // Extraer las subcadenas
+          const seq_inicio = secuencia.slice(0, inicio);
+          const seq_ultima_parte = secuencia.slice(numero_caracteres - final);
+
+          // Se concatenan
+          const secuencia_final = seq_inicio + seq_ultima_parte;
+
+          // Pa descargar
+          const downloadBtn = document.getElementById('downloadBtn');
+          downloadBtn.style.display = 'block';
+          downloadBtn.onclick = function() {
+            const fastaContent = `>SEQ_MOD\n${secuencia_final}`;
+            const blob = new Blob([fastaContent], { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'secuencia_modificada.fasta';
+            link.click();
+          };
+        } else {
+          document.getElementById('output').textContent = 'La secuencia es demasiado corta.';
+          document.getElementById('downloadBtn').style.display = 'none'; 
+        }
+      };
+
+      reader.readAsText(file); 
+    }
+
+    document.getElementById('form').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const inicio = parseInt(document.getElementById('inicio').value);
+      const final = parseInt(document.getElementById('final').value);
+      const file = document.getElementById('file').files[0];
+
+      // Checkeito
+      if (file) {
+        processFile(file, inicio, final);
+      } else {
+        alert("Por favor, carga un archivo de secuencia.");
+      }
+    });
+  </script>
+
+</body>
+</html>
