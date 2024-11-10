@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Procesar Secuencia de DNA</title>
+  <title>Recortar secuencia de DNA</title>
   <link rel="icon" href="favicon.ico" type="image/x-icon">
 
   <style>
@@ -40,18 +40,18 @@
 <body>
 
   <div class="container">
-    <h1>Procesar Secuencia de DNA</h1>
+    <h1>Preparar secuencia de DNA para BLAT</h1>
     <form id="form">
-      <label for="inicio">Posición de inicio:</label>
+      <label for="inicio">Nucleótidos al inicio:</label>
       <input type="number" id="inicio" name="inicio" value="20000" required>
 
-      <label for="final">Posición final:</label>
+      <label for="final">Nucleótidos al final:</label>
       <input type="number" id="final" name="final" value="20000" required>
 
-      <label for="file">Sube tu archivo de secuencia (formato .fa, y no multifasta que eso ya es pasarse y era mucho):</label>
+      <label for="file">Sube tu secuencia (formato .fa, y no multifasta que no me da la vida):</label>
       <input type="file" id="file" name="file" required>
 
-      <button type="submit">Procesar Secuencia</button>
+      <button type="submit">Procesar secuencia!</button>
     </form>
 
     <h2>Resultado:</h2>
