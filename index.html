@@ -48,7 +48,7 @@
       <label for="final">Nucleótidos al final:</label>
       <input type="number" id="final" name="final" value="20000" required>
 
-      <label for="file">Sube tu secuencia (formato .fa, y no multifasta que no me da la vida):</label>
+      <label for="file">Sube tu secuencia (formato .fa, no multifasta):</label>
       <input type="file" id="file" name="file" required>
 
       <button type="submit">Procesar secuencia!</button>
@@ -67,7 +67,7 @@
       reader.onload = function(e) {
         const content = e.target.result;
 
-        // Se separa el archivo por líneas
+        // Se separa el archivo por lineas
         const lines = content.split('\n');
         
         // Se elimina la primera y se junta el resto
@@ -75,7 +75,7 @@
 
         const numero_caracteres = secuencia.length;
 
-        // Pa checkear
+        // Para checkear
         if (numero_caracteres >= (inicio + final)) {
           // Extraer las subcadenas
           const seq_inicio = secuencia.slice(0, inicio);
@@ -84,7 +84,7 @@
           // Se concatenan
           const secuencia_final = seq_inicio + seq_ultima_parte;
 
-          // Pa descargar
+          // Para descargar
           const downloadBtn = document.getElementById('downloadBtn');
           downloadBtn.style.display = 'block';
           downloadBtn.onclick = function() {
